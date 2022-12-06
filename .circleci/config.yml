@@ -1,6 +1,5 @@
 version: 2.1
-orbs:
-  sonarcloud: sonarsource/sonarcloud@1.1.1
+
 jobs:
   build: 
     working_directory: ~/obsrv-query-engine
@@ -9,7 +8,6 @@ jobs:
     steps:
       - checkout
       - run: npm run build
-      - sonarcloud/scan
        
   test:
     working_directory: ~/obsrv-query-engine
@@ -17,7 +15,6 @@ jobs:
       - image: "circleci/node:14.18.2-bullseye-browsers-legacy"
     steps:
       - checkout
-      - run: npm install 
       - run: npm run coverage
       - store_artifacts:
           path: coverage
@@ -25,8 +22,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build: 
-          context: SonarCloud
+      - build
       - test: 
           requires:
             - build
